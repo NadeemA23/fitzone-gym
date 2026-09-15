@@ -1,21 +1,28 @@
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitZone Gym</title>
-</head>
-<body>
-    <header>
-        <h1>FitZone Gym</h1>
-    </header>
+{% extends "base.html" %}
 
-    <main>
-        <h2>Train Stronger. Live Better.</h2>
-        <p>
+{% block title %}Home | FitZone Gym{% endblock %}
+
+{% block content %}
+
+<section class="container py-5">
+    <div class="text-center">
+        <h1 class="display-3 fw-bold">FitZone Gym</h1>
+
+        <h2 class="h3 mt-3">Train Stronger. Live Better.</h2>
+
+        <p class="lead mt-4">
             Join FitZone Gym and take the next step towards your fitness goals.
         </p>
+
         <p>
-            Explore our membership options and gain access to gym classes
-            and member benefits.
+            Explore our membership options, join our community and gain
+            access to gym classes and member benefits.
         </p>
-    </main>
-</body>
-</html>
+
+        <a href="#" class="btn btn-primary btn-lg mt-3">
+            View Memberships
+        </a>
+    </div>
+</section>
+
+{% endblock %}
