@@ -22,9 +22,9 @@
 
                         <p><strong>{{ plan.duration_days }} days</strong></p>
 
-                        <button class="btn btn-primary">
-                            Choose Plan
-                        </button>
+                        <a href="{% url 'select_plan' plan.id %}" class="btn btn-primary">
+                        Choose Plan
+                      </a>
 
                     </div>
 

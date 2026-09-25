@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Membership | FitZone Gym{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <h1>Confirm Membership</h1>
+
+            <h2 class="mt-4">{{ plan.name }}</h2>
+
+            <p>{{ plan.description }}</p>
+
+            <p>
+                <strong>Price:</strong> £{{ plan.price }}
+            </p>
+
+            <p>
+                <strong>Duration:</strong> {{ plan.duration_days }} days
+            </p>
+
+            <button class="btn btn-primary">
+                Continue to Payment
+            </button>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
