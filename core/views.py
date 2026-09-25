@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from memberships.models import UserMembership
 
 def home(request):
     """Display the FitZone Gym homepage."""
@@ -24,5 +26,16 @@ def register(request):
         {'form': form}
     )
 
+@login_required
+def dashboard(request):
+    try:
+        membership = UserMembership.objects.get(user=request.user)
+    except UserMembership.DoesNotExist:
+        membership = None
 
+    return render(
+        request,
+        'core/dashboard.html',
+        {'membership': membership}
+    )
    

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}My Account | FitZone Gym{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1>My Account</h1>
+
+    <p>Welcome, {{ user.username }}.</p>
+
+    <h2 class="mt-4">My Membership</h2>
+
+    {% if membership %}
+
+        <p><strong>Plan:</strong> {{ membership.plan.name }}</p>
+        <p><strong>Price:</strong> £{{ membership.plan.price }}</p>
+        <p><strong>Start Date:</strong> {{ membership.start_date }}</p>
+        <p><strong>End Date:</strong> {{ membership.end_date }}</p>
+
+        {% if membership.active %}
+            <p><strong>Status:</strong> Active</p>
+        {% else %}
+            <p><strong>Status:</strong> Inactive</p>
+        {% endif %}
+
+    {% else %}
+
+        <p>You do not currently have a membership.</p>
+
+        <a href="{% url 'membership_plans' %}" class="btn btn-primary">
+            View Membership Plans
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
