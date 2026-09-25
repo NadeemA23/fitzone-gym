@@ -22,9 +22,10 @@
                 <strong>Duration:</strong> {{ plan.duration_days }} days
             </p>
 
-            <button class="btn btn-primary">
-                Continue to Payment
-            </button>
+            <a href="{% url 'create_checkout_session' plan.id %}"
+            class="btn btn-primary">
+            Continue to Payment
+            </a>
 
         </div>
     </div>
