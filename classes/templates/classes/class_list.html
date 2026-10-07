@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Gym Classes | FitZone Gym{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <h1>Gym Classes</h1>
+    <p>Take a look at the classes available at FitZone Gym.</p>
+
+    {% for gym_class in gym_classes %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2>{{ gym_class.name }}</h2>
+
+                <p>{{ gym_class.description }}</p>
+
+                <p><strong>Instructor:</strong> {{ gym_class.instructor }}</p>
+                <p><strong>Date:</strong> {{ gym_class.date }}</p>
+                <p><strong>Time:</strong> {{ gym_class.time }}</p>
+                <p><strong>Capacity:</strong> {{ gym_class.capacity }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <p>There are currently no classes available.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
