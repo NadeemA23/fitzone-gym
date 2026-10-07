@@ -3,6 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from memberships.models import UserMembership
+from classes.models import Booking
 
 def home(request):
     """Display the FitZone Gym homepage."""
@@ -33,9 +34,16 @@ def dashboard(request):
     except UserMembership.DoesNotExist:
         membership = None
 
+    bookings = Booking.objects.filter(
+        user=request.user
+    ).order_by('gym_class__date', 'gym_class__time')
+
     return render(
         request,
         'core/dashboard.html',
-        {'membership': membership}
+        {
+            'membership': membership,
+            'bookings': bookings
+        }
     )
    

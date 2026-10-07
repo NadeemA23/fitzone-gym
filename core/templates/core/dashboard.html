@@ -34,6 +34,43 @@
 
     {% endif %}
 
+    <h2 class="mt-5">My Class Bookings</h2>
+
+{% if bookings %}
+
+    {% for booking in bookings %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3>{{ booking.gym_class.name }}</h3>
+
+                <p>
+                    <strong>Instructor:</strong>
+                    {{ booking.gym_class.instructor }}
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ booking.gym_class.date }}
+                </p>
+
+                <p>
+                    <strong>Time:</strong>
+                    {{ booking.gym_class.time }}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+
+{% else %}
+
+    <p>You have not booked any classes yet.</p>
+
+    <a href="{% url 'class_list' %}" class="btn btn-primary">
+        View Gym Classes
+    </a>
+
+{% endif %}
+
 </div>
 
 {% endblock %}
