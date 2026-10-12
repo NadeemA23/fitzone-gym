@@ -1,28 +1,41 @@
+
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Home | FitZone Gym{% endblock %}
 
 {% block content %}
 
-<section class="container py-5">
-    <div class="text-center">
-        <h1 class="display-3 fw-bold">FitZone Gym</h1>
+<section class="gym-hero">
+    <div class="container">
+        <div class="gym-hero-content">
 
-        <h2 class="h3 mt-3">Train Stronger. Live Better.</h2>
+            <p class="gym-eyebrow">WELCOME TO FITZONE GYM</p>
 
-        <p class="lead mt-4">
-            Join FitZone Gym and take the next step towards your fitness goals.
-        </p>
+            <h1>
+                STRONGER.<br>
+                HEALTHIER.<br>
+                <span>HAPPIER.</span>
+            </h1>
 
-        <p>
-            Explore our membership options, join our community and gain
-            access to gym classes and member benefits.
-        </p>
+            <p class="gym-hero-description">
+                Push your limits, build your confidence and
+                reach your fitness goals with FitZone Gym.
+            </p>
 
-        <a href="{% url 'membership_plans' %}" class="btn btn-primary btn-lg mt-3">
-        View Memberships
-        </a>
+            <div class="gym-hero-buttons">
+                <a href="{% url 'membership_plans' %}"
+                   class="btn btn-primary btn-lg">
+                    View Memberships
+                </a>
 
+                <a href="{% url 'class_list' %}"
+                   class="btn btn-outline-light btn-lg">
+                    Explore Classes
+                </a>
+            </div>
+
+        </div>
     </div>
 </section>
 

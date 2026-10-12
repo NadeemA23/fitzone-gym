@@ -1,0 +1,133 @@
+/* FitZone Gym - Main Styles */
+
+:root {
+    --gym-dark: #101820;
+    --gym-black: #080d11;
+    --gym-green: #8df05b;
+    --gym-white: #ffffff;
+    --gym-light: #f4f6f7;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--gym-light);
+    color: var(--gym-dark);
+}
+
+.navbar {
+    background-color: var(--gym-black) !important;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.5rem;
+}
+
+.btn-primary {
+    background-color: var(--gym-green);
+    border-color: var(--gym-green);
+    color: var(--gym-black);
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: #73d646;
+    border-color: #73d646;
+    color: var(--gym-black);
+}
+
+.card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+h1, h2, h3 {
+    font-weight: 800;
+}
+
+/* Navigation styling */
+
+.navbar {
+    background-color: #080d11 !important;
+    padding: 18px 0;
+}
+
+.navbar-brand {
+    color: #8df05b !important;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.navbar .nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    margin-left: 12px;
+    transition: color 0.2s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+    color: #8df05b !important;
+}
+
+.navbar-toggler {
+    border-color: #8df05b;
+}
+
+/* Homepage hero section */
+
+.gym-hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    background-color: #101820;
+    background-image:
+    linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.92) 0%,
+        rgba(0, 0, 0, 0.65) 55%,
+        rgba(0, 0, 0, 0.35) 100%
+    ),
+    url("../images/gym-hero.jpg");
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 90px 0;
+}
+
+.gym-hero-content {
+    max-width: 750px;
+}
+
+.gym-eyebrow {
+    color: #8df05b;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.gym-hero h1 {
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+.gym-hero h1 span {
+    color: #8df05b;
+}
+
+.gym-hero-description {
+    font-size: 1.2rem;
+    color: #dddddd;
+    max-width: 550px;
+    margin: 25px 0;
+}
+
+.gym-hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}

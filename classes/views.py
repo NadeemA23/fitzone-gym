@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 from .models import GymClass, Booking
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import GymClassForm
-
+from django.utils import timezone
+from memberships.models import UserMembership
 
 def class_list(request):
     gym_classes = GymClass.objects.all().order_by('date', 'time')
@@ -17,24 +19,47 @@ def class_list(request):
 
 
 @login_required
+@require_POST
 def book_class(request, class_id):
     gym_class = get_object_or_404(GymClass, id=class_id)
 
-    booking, created = Booking.objects.get_or_create(
+    has_membership = UserMembership.objects.filter(
+        user=request.user,
+        active=True,
+        end_date__gte=timezone.localdate()
+    ).exists()
+
+    if not has_membership:
+        messages.error(
+            request,
+            "You need an active gym membership to book classes."
+        )
+        return redirect('class_list')
+
+    if Booking.objects.filter(
+        user=request.user,
+        gym_class=gym_class
+    ).exists():
+        messages.info(request, "You have already booked this class.")
+        return redirect('class_list')
+
+    current_bookings = Booking.objects.filter(
+        gym_class=gym_class
+    ).count()
+
+    if current_bookings >= gym_class.capacity:
+        messages.error(request, "Sorry, this class is fully booked.")
+        return redirect('class_list')
+
+    Booking.objects.create(
         user=request.user,
         gym_class=gym_class
     )
 
-    if created:
-        messages.success(
-            request,
-            f"You have booked {gym_class.name}."
-        )
-    else:
-        messages.info(
-            request,
-            f"You have already booked {gym_class.name}."
-        )
+    messages.success(
+        request,
+        f"You have booked {gym_class.name}."
+    )
 
     return redirect('class_list')
 
