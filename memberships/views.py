@@ -81,7 +81,7 @@ def payment_success(request):
     ).exists():
         return redirect('dashboard')
 
-    plan_id = checkout_session.metadata.get('plan_id')
+    plan_id = checkout_session.metadata['plan_id']
     plan = get_object_or_404(MembershipPlan, id=plan_id)
 
     start_date = timezone.now().date()
