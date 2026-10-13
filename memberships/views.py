@@ -2,6 +2,7 @@ import stripe
 from datetime import timedelta
 from django.utils import timezone
 from django.conf import settings
+from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import MembershipPlan, UserMembership
@@ -47,8 +48,10 @@ def create_checkout_session(request, plan_id):
         mode='payment',
         client_reference_id=str(request.user.id),
         metadata={'plan_id': str(plan.id)}, 
-       success_url='https://bookish-happiness-57wg9vj5rvj26w5-8000.app.github.dev/memberships/success/?session_id={CHECKOUT_SESSION_ID}',
-       cancel_url='https://bookish-happiness-57wg9vj5rvj26w5-8000.app.github.dev/memberships/',
+       success_url=request.build_absolute_uri(
+    '/memberships/success/?session_id={CHECKOUT_SESSION_ID}'
+),
+cancel_url=request.build_absolute_uri('/memberships/'),
        )
 
     return redirect(checkout_session.url)
@@ -66,21 +69,35 @@ def payment_success(request):
     if checkout_session.payment_status != 'paid':
         return redirect('membership_plans')
 
-    plan_id = checkout_session.metadata['plan_id']
-    plan = get_object_or_404(MembershipPlan, id=plan_id)
+    if str(checkout_session.client_reference_id) != str(request.user.id):
+        return redirect('membership_plans')
 
-    start_date = timezone.now().date()
-    end_date = start_date + timedelta(days=plan.duration_days)
+    if UserMembership.objects.filter(
+        stripe_session_id=session_id
+    ).exists():
+        return redirect('dashboard')
+    
 
-    UserMembership.objects.update_or_create(
-        user=request.user,
-        defaults={
-            'plan': plan,
-            'start_date': start_date,
-            'end_date': end_date,
-            'active': True,
-        }
-    )
+    with transaction.atomic():
+        membership, created = UserMembership.objects.select_for_update().get_or_create(
+            user=request.user,
+            defaults={
+                'plan': plan,
+                'start_date': start_date,
+                'end_date': end_date,
+                'active': True,
+                'stripe_session_id': session_id,
+            }
+        )
+
+        if not created and membership.stripe_session_id != session_id:
+            membership.plan = plan
+            membership.start_date = start_date
+            membership.end_date = end_date
+            membership.active = True
+            membership.stripe_session_id = session_id
+            membership.save()
+        
 
     return render(
         request,
