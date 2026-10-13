@@ -30,8 +30,9 @@ def create_checkout_session(request, plan_id):
     plan = get_object_or_404(MembershipPlan, id=plan_id)
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
-
-    checkout_session = stripe.checkout.Session.create(
+    print("Stripe checkout starting", flush=True)
+    try:
+        checkout_session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=[
             {
@@ -52,7 +53,11 @@ def create_checkout_session(request, plan_id):
     '/memberships/success/?session_id={CHECKOUT_SESSION_ID}'
 ),
 cancel_url=request.build_absolute_uri('/memberships/'),
-       )
+              )
+
+    except stripe.StripeError as e:
+        print(f"Stripe checkout error: {type(e).__name__}: {e}", flush=True)
+        raise
 
     return redirect(checkout_session.url)
 
@@ -76,6 +81,12 @@ def payment_success(request):
         stripe_session_id=session_id
     ).exists():
         return redirect('dashboard')
+
+    plan_id = checkout_session.metadata.get('plan_id')
+    plan = get_object_or_404(MembershipPlan, id=plan_id)
+
+    start_date = timezone.now().date()
+    end_date = start_date + timedelta(days=plan.duration_days)
     
 
     with transaction.atomic():
